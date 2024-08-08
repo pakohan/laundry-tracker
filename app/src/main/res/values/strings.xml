@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Laundry Tracker</string>
+    <string name="back_button_content_description">Go back</string>
+    <string name="add_laundry_item">Add new laundry item</string>
+    <string name="laundry_item_name_input_label">Name</string>
+    <string name="laundry_item_save_button">Save</string>
+    <string name="create_button">Create</string>
+    <string name="laundry_item_remove_button">Remove</string>
+    <string name="add_laundry_to_wash">Add Laundry to wash</string>
+    <string name="closet">Closet</string>
+    <string name="laundry_runs">Laundry runs</string>
+    <string name="preferences">Preferences</string>
+    <string name="enable_timer_setting">Set timer when laundry starts</string>
+</resources>
