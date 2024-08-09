@@ -1,8 +1,8 @@
 name: Upload to Play Store
 on:
   push:
-    tags:
-      - '[0-9].[0-9].[0-9]'
+#    tags:
+#      - '[0-9].[0-9].[0-9]'
 permissions:
   contents: read
 concurrency:
@@ -24,9 +24,17 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_version_code: ${{ github.run_number }}
           ORG_GRADLE_PROJECT_version_name: ${{ github.ref_name }}
+      - uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/bundle/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
       - uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.pakohan.laundrytracker
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          releaseFiles: ${{steps.sign_app.outputs.signedReleaseFile}}
           track: internal
