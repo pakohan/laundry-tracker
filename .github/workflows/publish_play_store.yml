@@ -29,4 +29,4 @@ jobs:
           serviceAccountJsonPlainText: ${{ secrets.SERVICE_ACCOUNT_JSON }}
           packageName: com.pakohan.laundrytracker
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          track: qa
+          track: internal
