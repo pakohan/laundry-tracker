@@ -38,3 +38,4 @@ jobs:
           packageName: com.pakohan.laundrytracker
           releaseFiles: ${{steps.sign_app.outputs.signedReleaseFile}}
           track: internal
+          status: draft
