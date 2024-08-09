@@ -13,8 +13,8 @@ android {
         applicationId = "com.pakohan.laundrytracker"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = (findProperty("version_code") ?: 1) as Int
+        versionName = (findProperty("version_name") ?: "1.0") as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
