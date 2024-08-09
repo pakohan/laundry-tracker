@@ -20,11 +20,6 @@ jobs:
           java-version: '22'
           distribution: 'temurin'
           cache: gradle
-      - uses: chkfung/android-version-actions@v1.2.2
-        with:
-          gradlePath: app/build.gradle.kts
-          versionCode: ${{ github.run_number}}
-          versionName: ${{ github.ref_name }}
       - run: ./gradlew app:bundleRelease
         env:
           ORG_GRADLE_PROJECT_version_code: ${{ github.run_number }}
