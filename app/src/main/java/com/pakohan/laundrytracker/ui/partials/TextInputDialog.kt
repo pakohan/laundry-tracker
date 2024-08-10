@@ -28,55 +28,54 @@ import androidx.compose.ui.window.Dialog
 @Preview
 @Composable
 fun TextInputDialog(
-    show: Boolean = true,
     title: String = "Input text",
-    onVisibilityChange: (Boolean) -> Unit = {},
+    inputText: String = "",
+    cancel: () -> Unit = {},
     onConfirm: (String) -> Unit = {},
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    var input by remember { mutableStateOf("") }
-    if (!show) {
-        input = ""
-    } else {
-        val focusRequester = remember { FocusRequester() }
+    var input by remember { mutableStateOf(inputText) }
+    val focusRequester = remember { FocusRequester() }
 
-        val submit = {
+    val submit = {
+        if (input != "") {
             keyboardController?.hide()
             onConfirm(input)
-            onVisibilityChange(false)
+            cancel()
         }
+    }
 
-        Dialog(onDismissRequest = { onVisibilityChange(false) }) {
-            Card {
-                Column(Modifier.padding(24.dp)) {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleLarge,
-                    )
-                    TextField(
-                        modifier = Modifier
-                            .focusRequester(focusRequester)
-                            .padding(top = 16.dp),
-                        singleLine = true,
-                        value = input,
-                        onValueChange = { input = it },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                        keyboardActions = KeyboardActions(
-                            onDone = { submit() },
-                        ),
-                    )
-                    LaunchedEffect(Unit) {
-                        focusRequester.requestFocus()
-                    }
-                    TextButton(
-                        modifier = Modifier
-                            .align(Alignment.End)
-                            .padding(top = 24.dp),
-                        onClick = submit,
-                    ) {
-                        Text("Save")
-                    }
+    Dialog(onDismissRequest = cancel) {
+        Card {
+            Column(Modifier.padding(24.dp)) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                )
+                TextField(
+                    modifier = Modifier
+                        .focusRequester(focusRequester)
+                        .padding(top = 16.dp),
+                    singleLine = true,
+                    value = input,
+                    onValueChange = { input = it.trim() },
+                    keyboardOptions = KeyboardOptions(imeAction = if (input != "") ImeAction.Done else ImeAction.None),
+                    keyboardActions = KeyboardActions(
+                        onDone = { submit() },
+                    ),
+                )
+                LaunchedEffect(Unit) {
+                    focusRequester.requestFocus()
+                }
+                TextButton(
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .padding(top = 24.dp),
+                    onClick = submit,
+                    enabled = input != "",
+                ) {
+                    Text("Save")
                 }
             }
         }

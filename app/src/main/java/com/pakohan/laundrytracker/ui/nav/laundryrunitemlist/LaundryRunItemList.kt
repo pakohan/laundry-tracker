@@ -23,12 +23,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.pakohan.laundrytracker.R
 import com.pakohan.laundrytracker.data.entity.EnrichedLaundryRunItem
 import com.pakohan.laundrytracker.ui.LaundryRunItemListViewModelFactory
 import com.pakohan.laundrytracker.ui.nav.NavigationDestination
+import com.pakohan.laundrytracker.ui.nav.laundryitemlist.LaundryItemListDestination
+import com.pakohan.laundrytracker.ui.partials.ClickableText
+import com.pakohan.laundrytracker.ui.partials.Link
+import com.pakohan.laundrytracker.ui.partials.LinkData
+import com.pakohan.laundrytracker.ui.partials.PlaceHolder
 
 object LaundryRunItemListDestination : NavigationDestination {
     private const val BASE_PATH = "laundry_run_items"
@@ -46,31 +52,54 @@ object LaundryRunItemListDestination : NavigationDestination {
 @Composable
 fun LaundryRunItemList(
     modifier: Modifier = Modifier,
+    navController: NavHostController,
     laundryRunId: Int,
     viewModel: LaundryRunItemListViewModel = viewModel(factory = LaundryRunItemListViewModelFactory(laundryRunId)),
 ) {
     val laundryRunItems by viewModel.laundryRunItems.collectAsState()
     val laundryRun by viewModel.laundryRun.collectAsState()
 
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-    ) {
-        items(laundryRunItems) {
-            if (laundryRun?.startedAt == null) {
-                AddLaundryRunItemListItem(
-                    entry = it,
-                ) { delta ->
-                    viewModel.increment(
-                        it,
-                        delta,
-                    )
-                }
-            } else {
-                CheckLaundryRunItemListItem(entry = it) { delta ->
-                    viewModel.incrementRetrieved(
-                        it,
-                        delta,
-                    )
+    if (laundryRunItems.isEmpty()) {
+        PlaceHolder(modifier = modifier) {
+            ClickableText(
+                linkData = LinkData(
+                    fullText = """You don't have any fashion items yet.
+Navigate to the list and add your first clothes.""".trimMargin(),
+                    linksList = listOf(
+                        Link(
+                            linkText = "Navigate to the list",
+                            linkInfo = "Add clothes to your closet",
+                            onClick = {
+                                navController.navigate(LaundryItemListDestination.route) {
+                                    popUpTo(0)
+                                }
+                            },
+                        ),
+                    ),
+                ),
+            )
+        }
+    } else {
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+        ) {
+            items(laundryRunItems) {
+                if (laundryRun?.startedAt == null) {
+                    AddLaundryRunItemListItem(
+                        entry = it,
+                    ) { delta ->
+                        viewModel.increment(
+                            it,
+                            delta,
+                        )
+                    }
+                } else {
+                    CheckLaundryRunItemListItem(entry = it) { delta ->
+                        viewModel.incrementRetrieved(
+                            it,
+                            delta,
+                        )
+                    }
                 }
             }
         }

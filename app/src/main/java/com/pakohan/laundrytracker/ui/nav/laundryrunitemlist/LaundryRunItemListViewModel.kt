@@ -13,24 +13,23 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class LaundryRunItemListViewModel(
-    private val laundryRunId: Int,
-    private val laundryRunRepository: LaundryRunRepository,
+    laundryRunId: Int,
+    laundryRunRepository: LaundryRunRepository,
     private val laundryRunItemRepository: LaundryRunItemRepository,
 ) : ViewModel() {
-    val laundryRunItems: StateFlow<List<EnrichedLaundryRunItem>>
-        get() = laundryRunItemRepository.getAllOfRunFlow(laundryRunId)
+    val laundryRunItems: StateFlow<List<EnrichedLaundryRunItem>> =
+        laundryRunItemRepository.getAllOfRunFlow(laundryRunId)
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000L),
                 initialValue = emptyList(),
             )
-    val laundryRun: StateFlow<LaundryRun?>
-        get() = laundryRunRepository.getFlow(laundryRunId)
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000L),
-                initialValue = LaundryRun(),
-            )
+    val laundryRun: StateFlow<LaundryRun?> = laundryRunRepository.getFlow(laundryRunId)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000L),
+            initialValue = LaundryRun(),
+        )
 
     fun increment(
         enrichedLaundryRunItem: EnrichedLaundryRunItem,

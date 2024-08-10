@@ -59,6 +59,7 @@ fun LaundryTrackerNavGraph(
             arguments = LaundryRunItemListDestination.arguments,
         ) {
             LaundryRunItemList(
+                navController = navController,
                 laundryRunId = it.arguments?.getInt(LaundryRunItemListDestination.LAUNDRY_RUN_ID) ?: 0,
             )
         }
