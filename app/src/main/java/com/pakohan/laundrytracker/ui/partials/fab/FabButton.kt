@@ -30,12 +30,13 @@ fun LaundryFabButton(
                 )
             }
 
-            TextInputDialog(
-                show = currentState.showDialog,
-                title = "Add item",
-                onVisibilityChange = viewModel::onDialogVisibilityChange,
-                onConfirm = viewModel::addLaundryItem,
-            )
+            if (currentState.showDialog) {
+                TextInputDialog(
+                    title = "Add item",
+                    cancel = viewModel::hideDialog,
+                    onConfirm = viewModel::addLaundryItem,
+                )
+            }
         }
     }
 }

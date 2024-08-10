@@ -27,6 +27,7 @@ import com.pakohan.laundrytracker.data.entity.EnrichedLaundryRun
 import com.pakohan.laundrytracker.ui.LaundryRunListViewModelFactory
 import com.pakohan.laundrytracker.ui.nav.TabNavigationDestination
 import com.pakohan.laundrytracker.ui.nav.laundryrunitemlist.LaundryRunItemListDestination
+import com.pakohan.laundrytracker.ui.partials.PlaceHolder
 import org.ocpsoft.prettytime.PrettyTime
 
 object LaundryRunListDestination : TabNavigationDestination {
@@ -43,45 +44,54 @@ fun LaundryRunList(
     viewModel: LaundryRunListViewModel = viewModel(factory = LaundryRunListViewModelFactory()),
 ) {
     val laundryItems by viewModel.laundryItems.collectAsState()
-    val context = LocalContext.current
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-    ) {
-        items(laundryItems) {
-            ListItem(
-                modifier = Modifier.clickable {
-                    navController.navigate(LaundryRunItemListDestination.buildRoute(it.id))
-                },
-                headlineContent = { HeadlineContent(it) },
-                supportingContent = { SupportingContent(it) },
-                trailingContent = {
-                    Row {
-                        if (it.startedAt == null) {
-                            IconButton(
-                                onClick = {
-                                    viewModel.startRun(
-                                        context,
-                                        it,
-                                    )
-                                },
-                            ) {
-                                Icon(
-                                    Icons.Filled.PlayArrow,
-                                    contentDescription = null,
-                                )
-                            }
-                        }
-                        if (it.retrievedQuantity == it.quantity) {
-                            IconButton(onClick = { viewModel.delete(it) }) {
-                                Icon(
-                                    Icons.Filled.Delete,
-                                    contentDescription = null,
-                                )
-                            }
-                        }
-                    }
-                },
+    if (laundryItems.isEmpty()) {
+        PlaceHolder(modifier = modifier) {
+            Text(
+                text = """Start by adding your first laundry run.
+Press + below.""",
             )
+        }
+    } else {
+        LazyColumn(
+            modifier = modifier.fillMaxSize(),
+        ) {
+            items(laundryItems) {
+                val context = LocalContext.current
+                ListItem(
+                    modifier = Modifier.clickable {
+                        navController.navigate(LaundryRunItemListDestination.buildRoute(it.id))
+                    },
+                    headlineContent = { HeadlineContent(it) },
+                    supportingContent = { SupportingContent(it) },
+                    trailingContent = {
+                        Row {
+                            if (it.startedAt == null) {
+                                IconButton(
+                                    onClick = {
+                                        viewModel.startRun(
+                                            context,
+                                            it,
+                                        )
+                                    },
+                                ) {
+                                    Icon(
+                                        Icons.Filled.PlayArrow,
+                                        contentDescription = null,
+                                    )
+                                }
+                            }
+                            if (it.retrievedQuantity == it.quantity) {
+                                IconButton(onClick = { viewModel.delete(it) }) {
+                                    Icon(
+                                        Icons.Filled.Delete,
+                                        contentDescription = null,
+                                    )
+                                }
+                            }
+                        }
+                    },
+                )
+            }
         }
     }
 }

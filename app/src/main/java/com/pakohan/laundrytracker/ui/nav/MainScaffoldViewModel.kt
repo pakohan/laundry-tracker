@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @Immutable
-data class UiState(
+internal data class UiState(
     val selectedTab: TabNavigationDestination? = null,
     @StringRes val currentTitle: Int,
 ) {
@@ -30,7 +30,7 @@ class MainScaffoldViewModel(
             currentTitle = R.string.app_name,
         ),
     )
-    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+    internal val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {

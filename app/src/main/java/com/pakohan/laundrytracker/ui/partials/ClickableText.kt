@@ -1,12 +1,12 @@
 package com.pakohan.laundrytracker.ui.partials
 
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -24,9 +24,8 @@ data class Link(
 )
 
 @Composable
-fun LogoAttribution(
+fun ClickableText(
     modifier: Modifier = Modifier,
-    style: TextStyle = TextStyle.Default,
     linkData: LinkData,
 ) {
     val annotatedString = buildAnnotatedString {
@@ -56,7 +55,7 @@ fun LogoAttribution(
 
     ClickableText(
         modifier = modifier,
-        style = style,
+        style = LocalTextStyle.current,
         text = annotatedString,
         onClick = { position ->
             linkData.linksList.forEach { link ->
@@ -78,7 +77,7 @@ fun LogoAttribution(
 @Preview(showBackground = true)
 @Composable
 fun LogoAttributionPreview() {
-    LogoAttribution(
+    ClickableText(
         linkData = LinkData(
             fullText = "Some sample text with a link. Click here to visit profile screen.",
             linksList = listOf(

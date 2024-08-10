@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 import java.util.Date
 
 @Immutable
-data class UiState(
+internal data class UiState(
     val icon: ImageVector,
     val onClick: (Context) -> Unit,
     val showDialog: Boolean = false,
@@ -46,7 +46,7 @@ class FabButtonViewModel(
     navController,
 ) {
     private val _uiState: MutableStateFlow<UiState?> = MutableStateFlow(null)
-    val uiState: StateFlow<UiState?> = _uiState.asStateFlow()
+    internal val uiState: StateFlow<UiState?> = _uiState.asStateFlow()
 
     private val laundryRuns: StateFlow<List<EnrichedLaundryRun>> = laundryRunRepository.getAllFlow()
         .stateIn(
@@ -160,8 +160,8 @@ class FabButtonViewModel(
         }
     }
 
-    fun onDialogVisibilityChange(show: Boolean) = _uiState.update {
-        it?.copy(showDialog = show)
+    fun hideDialog() = _uiState.update {
+        it?.copy(showDialog = false)
     }
 
     fun addLaundryItem(name: String) = viewModelScope.launch {

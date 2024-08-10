@@ -17,13 +17,12 @@ class LaundryRunListViewModel(
     private val laundryRunRepository: LaundryRunRepository,
     private val preferencesRepository: DataStoreUserPreferencesRepository,
 ) : ViewModel() {
-    val laundryItems: StateFlow<List<EnrichedLaundryRun>>
-        get() = laundryRunRepository.getAllFlow()
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000L),
-                initialValue = emptyList(),
-            )
+    val laundryItems: StateFlow<List<EnrichedLaundryRun>> = laundryRunRepository.getAllFlow()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000L),
+            initialValue = emptyList(),
+        )
 
     fun delete(laundryRun: EnrichedLaundryRun) {
         viewModelScope.launch { laundryRunRepository.delete(LaundryRun(id = laundryRun.id)) }

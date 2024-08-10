@@ -21,8 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
@@ -34,9 +32,9 @@ import com.pakohan.laundrytracker.R
 import com.pakohan.laundrytracker.data.entity.UserPreferences
 import com.pakohan.laundrytracker.ui.PreferencesViewModelFactory
 import com.pakohan.laundrytracker.ui.nav.TabNavigationDestination
+import com.pakohan.laundrytracker.ui.partials.ClickableText
 import com.pakohan.laundrytracker.ui.partials.Link
 import com.pakohan.laundrytracker.ui.partials.LinkData
-import com.pakohan.laundrytracker.ui.partials.LogoAttribution
 
 object PreferencesDestination : TabNavigationDestination {
     override val route = "preferences"
@@ -88,9 +86,8 @@ private fun PreferencesPane(
             onValueChange = { onTimerDurationChange(it.toInt() * 60) },
         )
         Spacer(modifier = Modifier.weight(1f))
-        LogoAttribution(
+        ClickableText(
             modifier = Modifier.padding(16.dp),
-            style = TextStyle.Default.copy(textAlign = TextAlign.Center),
             linkData = LinkData(
                 fullText = "Launcher icon by vectordoodle under CC-BY license",
                 linksList = listOf(
