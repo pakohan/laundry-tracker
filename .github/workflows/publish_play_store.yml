@@ -1,10 +1,10 @@
 name: Upload to Play Store
 on:
   push:
-    tags:
-      - '[0-9].[0-9].[0-9]'
+    branches:
+      - main
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: "publish"
   cancel-in-progress: false
@@ -23,7 +23,13 @@ jobs:
       - run: ./gradlew app:bundleRelease
         env:
           ORG_GRADLE_PROJECT_version_code: ${{ github.run_number }}
-          ORG_GRADLE_PROJECT_version_name: ${{ github.ref_name }}
+          ORG_GRADLE_PROJECT_version_name: $(git rev-parse --short "$GITHUB_SHA")
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.run_number }}
+          generate_release_notes: true
+          make_latest: true
+          files: ${{steps.sign_app.outputs.signedReleaseFile}}
       - uses: r0adkll/sign-android-release@v1
         id: sign_app
         with:
