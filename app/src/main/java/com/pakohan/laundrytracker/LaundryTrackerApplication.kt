@@ -8,9 +8,9 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.pakohan.laundrytracker.data.AppContainer
 import com.pakohan.laundrytracker.data.AppDataContainer
 
-private const val LAYOUT_PREFERENCE_NAME = "layout_preferences"
+private const val USER_PREFERENCES_NAME = "user_preferences"
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
-    name = LAYOUT_PREFERENCE_NAME,
+    name = USER_PREFERENCES_NAME,
 )
 
 class LaundryTrackerApplication : Application() {

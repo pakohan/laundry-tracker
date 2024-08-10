@@ -13,7 +13,6 @@ composeBom = "2024.06.00"
 prettytime = "5.0.9.Final"
 room = "2.6.1"
 ksp = "2.0.10-1.0.24"
-playServicesPal = "20.3.0"
 compose-settings = "2.4.0"
 
 
@@ -48,7 +47,6 @@ androidx-room-common = { group = "androidx.room", name = "room-common", version.
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
-play-services-pal = { group = "com.google.android.gms", name = "play-services-pal", version.ref = "playServicesPal" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
