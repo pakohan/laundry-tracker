@@ -26,7 +26,8 @@ fun PlaceHolder(
     horizontalAlignment = Alignment.CenterHorizontally,
 ) {
     Spacer(modifier = Modifier.weight(1f))
-    val mergedStyle = LocalTextStyle.current.merge(MaterialTheme.typography.titleLarge).copy(textAlign = TextAlign.Center)
+    val mergedStyle = LocalTextStyle.current.merge(MaterialTheme.typography.titleLarge)
+        .copy(textAlign = TextAlign.Center)
     CompositionLocalProvider(
         LocalTextStyle provides mergedStyle,
         content = content,
