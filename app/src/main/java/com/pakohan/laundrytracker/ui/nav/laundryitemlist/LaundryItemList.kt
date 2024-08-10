@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NamedNavArgument
 import com.pakohan.laundrytracker.R
+import com.pakohan.laundrytracker.data.entity.LaundryItem
 import com.pakohan.laundrytracker.ui.LaundryItemListViewModelFactory
 import com.pakohan.laundrytracker.ui.nav.TabNavigationDestination
 
@@ -41,11 +42,22 @@ fun LaundryItemList(
             ListItem(
                 headlineContent = { Text(it.name) },
                 trailingContent = {
-                    IconButton(onClick = { viewModel.delete(it) }) {
-                        Icon(
-                            Icons.Filled.Delete,
-                            contentDescription = null,
-                        )
+                    if (it.canBeDeleted) {
+                        IconButton(
+                            onClick = {
+                                viewModel.delete(
+                                    LaundryItem(
+                                        id = it.id,
+                                        name = it.name,
+                                    ),
+                                )
+                            },
+                        ) {
+                            Icon(
+                                Icons.Filled.Delete,
+                                contentDescription = null,
+                            )
+                        }
                     }
                 },
             )
