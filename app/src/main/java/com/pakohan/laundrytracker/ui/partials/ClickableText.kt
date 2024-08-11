@@ -1,11 +1,14 @@
 package com.pakohan.laundrytracker.ui.partials
 
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,7 +38,7 @@ fun ClickableText(
             while (startIndex >= 0) {
                 val endIndex = startIndex + link.linkText.length
                 addStyle(
-                    style = SpanStyle(color = Color.Blue),
+                    style = SpanStyle(color = MaterialTheme.colorScheme.secondary),
                     start = startIndex,
                     end = endIndex,
                 )
@@ -54,8 +57,10 @@ fun ClickableText(
     }
 
     ClickableText(
-        modifier = modifier,
-        style = LocalTextStyle.current,
+        modifier = modifier.semantics {
+            this.contentDescription = "save laundry item"
+        },
+        style = LocalTextStyle.current.copy(color = LocalContentColor.current),
         text = annotatedString,
         onClick = { position ->
             linkData.linksList.forEach { link ->

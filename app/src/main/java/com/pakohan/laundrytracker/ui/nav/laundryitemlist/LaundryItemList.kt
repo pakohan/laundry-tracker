@@ -16,6 +16,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NamedNavArgument
 import com.pakohan.laundrytracker.R
@@ -89,9 +91,13 @@ private fun LaundryItemList(
     ) {
         items(items = items) {
             ListItem(
-                modifier = Modifier.clickable {
-                    onClick(it)
-                },
+                modifier = Modifier
+                    .clickable {
+                        onClick(it)
+                    }
+                    .semantics {
+                        this.contentDescription = "laundry item ${it.name}"
+                    },
                 headlineContent = { Text(it.name) },
                 trailingContent = {
                     if (it.canBeDeleted) {
@@ -100,7 +106,7 @@ private fun LaundryItemList(
                         ) {
                             Icon(
                                 Icons.Filled.Delete,
-                                contentDescription = null,
+                                contentDescription = "delete laundry item",
                             )
                         }
                     }

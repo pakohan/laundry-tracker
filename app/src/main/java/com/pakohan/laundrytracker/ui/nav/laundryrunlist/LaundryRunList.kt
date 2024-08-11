@@ -19,6 +19,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavHostController
@@ -55,17 +57,24 @@ Press + below.""",
         LazyColumn(
             modifier = modifier.fillMaxSize(),
         ) {
-            items(laundryItems) {
+            items(
+                laundryItems,
+                key = { it.id },
+            ) {
                 val context = LocalContext.current
                 ListItem(
-                    modifier = Modifier.clickable {
-                        navController.navigate(LaundryRunItemListDestination.buildRoute(it.id))
-                    },
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate(LaundryRunItemListDestination.buildRoute(it.id))
+                        }
+                        .semantics {
+                            this.contentDescription = "Laundry run ${it.id}"
+                        },
                     headlineContent = { HeadlineContent(it) },
                     supportingContent = { SupportingContent(it) },
                     trailingContent = {
                         Row {
-                            if (it.startedAt == null) {
+                            if (it.startedAt == null && it.quantity > 0) {
                                 IconButton(
                                     onClick = {
                                         viewModel.startRun(
@@ -76,7 +85,7 @@ Press + below.""",
                                 ) {
                                     Icon(
                                         Icons.Filled.PlayArrow,
-                                        contentDescription = null,
+                                        contentDescription = "start laundry run",
                                     )
                                 }
                             }
@@ -84,7 +93,7 @@ Press + below.""",
                                 IconButton(onClick = { viewModel.delete(it) }) {
                                     Icon(
                                         Icons.Filled.Delete,
-                                        contentDescription = null,
+                                        contentDescription = "delete laundry run",
                                     )
                                 }
                             }

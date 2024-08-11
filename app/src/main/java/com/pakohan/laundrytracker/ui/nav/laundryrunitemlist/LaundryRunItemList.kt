@@ -19,6 +19,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -113,7 +115,9 @@ fun AddLaundryRunItemListItem(
     onIncrement: (Int) -> Unit,
 ) {
     ListItem(
-        modifier = modifier,
+        modifier = modifier.semantics {
+            this.contentDescription = "laundry item ${entry.laundryItemName}"
+        },
         headlineContent = {
             Row {
                 Text(
@@ -132,7 +136,7 @@ fun AddLaundryRunItemListItem(
                 ) {
                     Icon(
                         Icons.Filled.Add,
-                        contentDescription = null,
+                        contentDescription = "increase amount of this item in washing machine",
                     )
                 }
                 IconButton(
@@ -143,7 +147,7 @@ fun AddLaundryRunItemListItem(
                 ) {
                     Icon(
                         Icons.Filled.Remove,
-                        contentDescription = null,
+                        contentDescription = "decrease amount of this item in washing machine",
                     )
                 }
             }
@@ -158,7 +162,9 @@ fun CheckLaundryRunItemListItem(
     onIncrement: (Int) -> Unit,
 ) {
     ListItem(
-        modifier = modifier,
+        modifier = modifier.semantics {
+            this.contentDescription = "laundry item ${entry.laundryItemName}"
+        },
         headlineContent = {
             Row {
                 Text(
@@ -175,7 +181,7 @@ fun CheckLaundryRunItemListItem(
                 AnimatedVisibility(visible = entry.retrievedQuantity == entry.quantity) {
                     Icon(
                         imageVector = Icons.Filled.Check,
-                        contentDescription = null,
+                        contentDescription = "each item of this category got retrieved",
                         modifier = Modifier.padding(16.dp),
                     )
                 }
@@ -187,7 +193,7 @@ fun CheckLaundryRunItemListItem(
                 ) {
                     Icon(
                         Icons.Filled.Add,
-                        contentDescription = null,
+                        contentDescription = "confirm another entity of this particular laundry item",
                     )
                 }
                 IconButton(
@@ -198,7 +204,7 @@ fun CheckLaundryRunItemListItem(
                 ) {
                     Icon(
                         Icons.Filled.Remove,
-                        contentDescription = null,
+                        contentDescription = "revert confirmation of another entity of this particular laundry item",
                     )
                 }
             }

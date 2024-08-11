@@ -31,6 +31,7 @@ import java.util.Date
 @Immutable
 internal data class UiState(
     val icon: ImageVector,
+    val contentDescription: String,
     val onClick: (Context) -> Unit,
     val showDialog: Boolean = false,
     val inputText: String = "",
@@ -75,11 +76,13 @@ class FabButtonViewModel(
         when (location.destination) {
             LaundryItemListDestination -> UiState(
                 icon = Icons.Filled.Add,
+                contentDescription = "add laundry item",
                 onClick = ::showAddLaundryItemDialog,
             )
 
             LaundryRunListDestination -> UiState(
                 icon = Icons.Filled.Add,
+                contentDescription = "add laundry run",
                 onClick = ::addLaundryRun,
             )
 
@@ -96,16 +99,18 @@ class FabButtonViewModel(
         val laundryRun = laundryRuns.value.find { it.id == id }
         if (laundryRun == null) {
             return null
-        } else if (laundryRun.startedAt == null) {
+        } else if (laundryRun.startedAt == null && laundryRun.quantity > 0) {
             return UiState(
                 icon = Icons.Filled.PlayArrow,
                 onClick = ::startLaundryRun,
+                contentDescription = "start laundry run",
                 laundryRun = laundryRun,
             )
-        } else if (laundryRun.retrievedQuantity == laundryRun.quantity) {
+        } else if (laundryRun.startedAt != null && laundryRun.retrievedQuantity == laundryRun.quantity) {
             return UiState(
                 icon = Icons.Filled.Delete,
                 onClick = ::deleteLaundryRun,
+                contentDescription = "delete laundry run",
                 laundryRun = laundryRun,
             )
         }
@@ -137,14 +142,8 @@ class FabButtonViewModel(
                     startedAt = Date(),
                 ),
             )
-            _uiState.update {
-                UiState(
-                    icon = Icons.Filled.Delete,
-                    onClick = ::deleteLaundryRun,
-                    laundryRun = currentState.laundryRun.copy(startedAt = Date()),
-                )
-            }
             preferencesRepository.startTimer(context)
+            // laundryRuns stateflow wil take care of UiState change
         }
     }
 
