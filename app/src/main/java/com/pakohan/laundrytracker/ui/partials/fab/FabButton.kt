@@ -26,7 +26,7 @@ fun LaundryFabButton(
             FloatingActionButton(onClick = { currentState.onClick(context) }) {
                 Icon(
                     imageVector = currentState.icon,
-                    contentDescription = null,
+                    contentDescription = currentState.contentDescription,
                 )
             }
 

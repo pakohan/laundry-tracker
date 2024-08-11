@@ -123,7 +123,7 @@ fun BottomBar(
                     icon = {
                         Icon(
                             it.icon,
-                            contentDescription = null,
+                            contentDescription = stringResource(it.titleRes),
                         )
                     },
                     label = { Text(stringResource(it.titleRes)) },
