@@ -1,6 +1,6 @@
 [versions]
 agp = "8.6.1"
-androidxNavigationCompose = "2.8.0"
+androidxNavigationCompose = "2.8.1"
 datastorePreferences = "1.1.1"
 kotlin = "2.0.20"
 coreKtx = "1.13.1"
