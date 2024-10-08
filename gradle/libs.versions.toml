@@ -13,7 +13,7 @@ composeBom = "2024.09.03"
 prettytime = "5.0.9.Final"
 room = "2.6.1"
 ksp = "2.0.20-1.0.25"
-compose-settings = "2.5.0"
+compose-settings = "2.6.0"
 
 
 [libraries]
