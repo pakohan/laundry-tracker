@@ -12,7 +12,7 @@ activityCompose = "1.9.3"
 composeBom = "2024.10.01"
 prettytime = "5.0.9.Final"
 room = "2.6.1"
-ksp = "2.0.21-1.0.28"
+ksp = "2.1.10-1.0.30"
 compose-settings = "2.6.0"
 
 
